@@ -1,12 +1,19 @@
-@import './tailwindcss.css';
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+@import "./variables";
+@import "./tailwindcss.css";
 
 body {
-  
+  font-family: "Inter", sans-serif;
+  color: #000;
+  background: $bg;
 }
 
 .wrapper {
   max-width: 1200px;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  background: #ffffff;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  margin: 85px auto;
 }
