@@ -3,10 +3,18 @@
 @import "./variables";
 @import "./tailwindcss.css";
 
+html {
+  line-height: 0;
+  overflow: hidden;
+}
+
 body {
-  font-family: "Inter", sans-serif;
-  color: #000;
+  color: #333;
   background: $bg;
+}
+
+* {
+  font-family: "Inter", sans-serif;
 }
 
 .wrapper {
