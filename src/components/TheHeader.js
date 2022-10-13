@@ -1,4 +1,4 @@
-export default function TheHeader() {
+export default function TheHeader(props) {
   return (
     <header className="border-gray-100 border-b">
       <div className="py-11 px-11 flex justify-between items-center">
@@ -11,27 +11,24 @@ export default function TheHeader() {
         </div>
 
         <ul className="flex items-center gap-7">
-          <li className="flex items-center gap-3 text-sm font-semibold">
-            <button>
-              <img src="/svg/cart.svg" width="20" height="20" alt="Cart" />
-            </button>
+          <li
+            onClick={props.onCloseCart}
+            className="flex items-center gap-3 text-sm font-semibold cursor-pointer"
+          >
+            <img src="/svg/cart.svg" width="20" height="20" alt="Cart" />
 
             <span>1205 руб.</span>
           </li>
-          <li>
-            <button>
-              <img
-                src="/svg/favorite.svg"
-                width="22"
-                height="19"
-                alt="Favorite"
-              />
-            </button>
+          <li className="cursor-pointer">
+            <img
+              src="/svg/favorite.svg"
+              width="22"
+              height="19"
+              alt="Favorite"
+            />
           </li>
-          <li>
-            <button>
-              <img src="/svg/user.svg" width="20" height="20" alt="User" />
-            </button>
+          <li className="cursor-pointer">
+            <img src="/svg/user.svg" width="20" height="20" alt="User" />
           </li>
         </ul>
       </div>
