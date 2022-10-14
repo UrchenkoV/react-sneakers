@@ -1,5 +1,19 @@
+import { useState, useEffect } from "react";
+
 export default function TheCart({ onClose, products = [] }) {
   console.log(products);
+  const [bill, setBill] = useState(0);
+  const [tax, setTax] = useState(0);
+
+  useEffect(() => {
+    const getBill = () => {
+      let result = 110;
+      products.forEach((p) => {
+        result += p.price;
+      });
+      setBill(result);
+    };
+  }, [products]);
   return (
     <div>
       <div
@@ -26,19 +40,14 @@ export default function TheCart({ onClose, products = [] }) {
 
         <div className="flex flex-col gap-5 grow overflow-y-auto">
           {products.map((p) => (
-            <div className="border border-gray-100 rounded-[20px] p-5 flex gap-4">
-              <img
-                src={p.image}
-                width="70"
-                height="70"
-                alt={p.title}
-              />
+            <div key={p.id} className="border border-gray-100 rounded-[20px] p-5 flex gap-4">
+              <img src={p.image} width="70" height="70" alt={p.title} />
 
               <div className="flex flex-col gap-2">
-                <h4 className="text-sm font-normal">
-                  {p.title}
-                </h4>
-                <span className="text-sm font-bold">{p.price.toLocaleString()} руб.</span>
+                <h4 className="text-sm font-normal">{p.title}</h4>
+                <span className="text-sm font-bold">
+                  {p.price.toLocaleString()} руб.
+                </span>
               </div>
 
               <button className="shrink-0 opacity-50 hover:opacity-100">
@@ -57,12 +66,16 @@ export default function TheCart({ onClose, products = [] }) {
           <div className="flex justify-between gap-2 mb-5">
             <span className="shrink-0">Итого:</span>
             <span className="border-b border-gray-200 border-dashed w-full"></span>
-            <span className="font-semibold shrink-0">21 498 руб.</span>
+            <span className="font-semibold shrink-0">
+              {bill.toLocaleString()} руб.
+            </span>
           </div>
           <div className="flex justify-between gap-2">
             <span className="shrink-0">Налог 5%:</span>
             <span className="border-b border-gray-200 border-dashed w-full"></span>
-            <span className="font-semibold shrink-0">1 074 руб.</span>
+            <span className="font-semibold shrink-0">
+              {tax.toLocaleString()} руб.
+            </span>
           </div>
 
           <button className="group mt-6 font-semibold bg-green-400 hover:bg-green-500 duration-300 text-white py-4 px-7 w-full rounded-[18px] relative flex items-center">
