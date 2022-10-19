@@ -1,9 +1,8 @@
 import { useState } from "react";
 
-export default function ProductCard({title, image, price, onFavorie, onAdd}) {
-  console.log(title);
+export default function ProductCard({title, image, price, onFavorie, onAdd, favorited = false}) {
   const [isAdded, setIsAdded] = useState(false);
-  const [isFavorite, setFavorite] = useState(false);
+  const [isFavorite, setFavorite] = useState(favorited);
 
   const onClickAdd = () => {
     onAdd()
