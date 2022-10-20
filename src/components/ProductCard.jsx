@@ -1,17 +1,17 @@
 import { useState } from "react";
 
-export default function ProductCard({title, image, price, onFavorie, onAdd, favorited = false}) {
-  const [isAdded, setIsAdded] = useState(false);
-  const [isFavorite, setFavorite] = useState(favorited);
+export default function ProductCard({title, image, price, onFavorie, onAdd, isFavorite = false, isAdded = false}) {
+  //const [isAdded, setIsAdded] = useState(false);
+  // const [isFavorite, setFavorite] = useState(favorited);
 
   const onClickAdd = () => {
     onAdd()
-    setIsAdded(!isAdded);
+    //setIsAdded(!isAdded);
   };
 
   const onClickFavorite = () => {
     onFavorie()
-    setFavorite(!isFavorite);
+    //setFavorite(!isFavorite);
   };
 
   return (

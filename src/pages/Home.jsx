@@ -1,6 +1,15 @@
 import ProductCard from "../components/ProductCard";
 
-export default function Home({searchInput, products = [], onSearchInput, setSearchInput, onAddToCart, onAddFavorite}) {
+export default function Home({
+  searchInput,
+  products = [],
+  cartProducts = [],
+  favorites = [],
+  onSearchInput,
+  setSearchInput,
+  onAddToCart,
+  onAddFavorite,
+}) {
   return (
     <div className="px-11 py-10">
       <div className="mb-10 flex justify-between items-center">
@@ -43,6 +52,10 @@ export default function Home({searchInput, products = [], onSearchInput, setSear
               image={p.image}
               onFavorie={() => onAddFavorite(p, p.id)}
               onAdd={() => onAddToCart(p)}
+              isAdded={cartProducts.some(
+                (cartProduct) => +cartProduct.product_id === +p.id
+              )}
+              isFavorite={favorites.some((f) => +f.product_id === +p.id)}
             />
           ))}
       </div>

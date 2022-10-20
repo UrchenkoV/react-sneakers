@@ -8,7 +8,7 @@ export default function FavoriteEmpty() {
       <p className="text-base">Вы ничего не добавляли в закладки</p>
 
       <button
-        className="group mt-14 font-semibold bg-green-400 hover:bg-green-500 duration-300 text-white py-4 px-7 w-full rounded-[18px] relative flex items-center w-60"
+        className="group mt-10 font-semibold bg-green-400 hover:bg-green-500 duration-300 text-white py-4 px-7 rounded-[18px] relative flex items-center w-60"
       >
         <img
           src="/svg/arrow-left.svg"

@@ -1,7 +1,7 @@
 import FavoriteEmpty from "../components/FavoriteEmpty";
 import ProductCard from "../components/ProductCard";
 
-export default function Favorites({ items, onAddToCart, onAddFavorite }) {
+export default function Favorites({ items, onAddToCart, onAddFavorite, cartProducts }) {
   return (
     <div className="px-11 py-10">
       <div className="mb-10 flex justify-between items-center">
@@ -18,7 +18,8 @@ export default function Favorites({ items, onAddToCart, onAddFavorite }) {
               image={favorite.image}
               onFavorie={() => onAddFavorite(favorite, favorite.product_id)}
               onAdd={() => onAddToCart(favorite)}
-              favorited={true}
+              isFavorite={true}
+              isAdded={cartProducts.some(cartProduct => +cartProduct.product_id === +favorite.product_id)}
             />
           ))}
         </div>
