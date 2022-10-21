@@ -1,25 +1,23 @@
-import { useState } from "react";
-
-export default function ProductCard({title, image, price, onFavorie, onAdd, isFavorite = false, isAdded = false}) {
-  //const [isAdded, setIsAdded] = useState(false);
-  // const [isFavorite, setFavorite] = useState(favorited);
-
-  const onClickAdd = () => {
-    onAdd()
-    //setIsAdded(!isAdded);
-  };
-
-  const onClickFavorite = () => {
-    onFavorie()
-    //setFavorite(!isFavorite);
-  };
+export default function ProductCard({
+  title,
+  image,
+  price,
+  onFavorie,
+  onAdd,
+  isFavorite = false,
+  isAdded = false,
+}) {
 
   return (
     <div className="border border-gray-100 rounded-[40px] p-8 hover:shadow-lg duration-300 hover:-translate-y-1">
       <div className="">
-        <button className="absolute" onClick={onClickFavorite}>
+        <button className="absolute" onClick={onFavorie}>
           <img
-            src={isFavorite ? "/svg/favorite-active.svg" : "/svg/favorite-inactive.svg"}
+            src={
+              isFavorite
+                ? "/svg/favorite-active.svg"
+                : "/svg/favorite-inactive.svg"
+            }
             alt=""
           />
         </button>
@@ -36,7 +34,7 @@ export default function ProductCard({title, image, price, onFavorie, onAdd, isFa
                 {price.toLocaleString()} руб.
               </span>
             </div>
-            <button onClick={onClickAdd}>
+            <button onClick={onAdd}>
               <img
                 src={
                   isAdded ? "/svg/cart-plus-active.svg" : "/svg/cart-plus.svg"

@@ -51,7 +51,7 @@ export default function Home({
               price={p.price}
               image={p.image}
               onFavorie={() => onAddFavorite(p, p.id)}
-              onAdd={() => onAddToCart(p)}
+              onAdd={() => onAddToCart(p, p.id)}
               isAdded={cartProducts.some(
                 (cartProduct) => +cartProduct.product_id === +p.id
               )}

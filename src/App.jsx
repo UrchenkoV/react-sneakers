@@ -16,6 +16,7 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [isAdded, setIsAdded] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
+  const [cartResultPrice, setCartResultPrice] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -36,20 +37,23 @@ function App() {
     fetchData();
   }, []);
 
-  const onAddToCart = async (product) => {
+  useEffect(() => {
+    setCartResultPrice(getResultPrice())
+  }, [cartProducts])
+
+  const onAddToCart = async (product, productId) => {
     try {
-      const hasProduct = cartProducts.find(
-        (p) => +p.product_id === +product.id
-      );
+      const hasProduct = cartProducts.find((p) => +p.product_id === +productId);
+
       if (hasProduct) {
         onRemoveProduct(hasProduct.id);
       } else {
-        const dataProduct = Object.assign(product, { product_id: product.id });
+        const dataProduct = Object.assign(product, { product_id: productId });
         const { data } = await axios.post(
           "https://6347f6c30484786c6e8e09ee.mockapi.io/cart",
           dataProduct
         );
-        console.log(data);
+
         setIsAdded(true);
         setCartProducts((prev) => [...prev, data]);
       }
@@ -67,7 +71,7 @@ function App() {
       setCartProducts((prev) =>
         prev.filter((item) => Number(item.id) !== Number(id))
       );
-      setIsAdded(false)
+      setIsAdded(false);
     } catch (e) {
       alert("Ошибка при удалении из корзины.");
       console.error(e);
@@ -80,20 +84,18 @@ function App() {
 
   const onAddFavorite = async (product, productId) => {
     try {
-      console.log(product, productId, favorites);
-      const hasProduct = favorites.find((p) => p.product_id == productId);
+      const hasProduct = favorites.find((p) => +p.product_id === +productId);
       if (!hasProduct) {
         const { data } = await axios.post(
           `https://6347f6c30484786c6e8e09ee.mockapi.io/favorites`,
           Object.assign(product, { product_id: productId })
         );
-        console.log(data);
-        setFavorite(true)
+        setFavorite(true);
         setFavorites((prev) => [...prev, data]);
         return;
       }
 
-      deleteFavorite(product.id);
+      deleteFavorite(hasProduct.id);
     } catch (error) {
       alert("Ошибка.");
       console.error(error);
@@ -102,20 +104,22 @@ function App() {
 
   const deleteFavorite = async (favoriteId) => {
     try {
-      console.log(favoriteId, favorites);
       const { data } = await axios.delete(
         `https://6347f6c30484786c6e8e09ee.mockapi.io/favorites/${favoriteId}`
       );
       setFavorites((prev) =>
-        prev.filter((favorite) => +favorite.id != +favoriteId)
+        prev.filter((favorite) => +favorite.id !== +favoriteId)
       );
-      setFavorite(false)
-      console.log(data, favorites);
+      setFavorite(false);
     } catch (error) {
       alert("Ошибка.");
       console.error(error);
     }
   };
+
+  const getResultPrice = () => {
+    return cartProducts.reduce((accum, current) => accum + current.price, 0)
+  }
 
   return (
     <div className="wrapper">
@@ -127,7 +131,10 @@ function App() {
         />
       )}
 
-      <TheHeader onCloseCart={() => setIsCartOpen(true)} />
+      <TheHeader
+        onOpenCart={() => setIsCartOpen(true)}
+        cartResultPrice={cartResultPrice}
+      />
 
       <Routes>
         <Route

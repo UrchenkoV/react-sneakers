@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function TheHeader(props) {
+export default function TheHeader({onOpenCart, cartResultPrice}) {
   return (
     <header className="border-gray-100 border-b">
       <div className="py-11 px-11 flex justify-between items-center">
@@ -16,12 +16,12 @@ export default function TheHeader(props) {
 
         <ul className="flex items-center gap-7">
           <li
-            onClick={props.onCloseCart}
+            onClick={onOpenCart}
             className="flex items-center gap-3 text-sm font-semibold cursor-pointer"
           >
             <img src="/svg/cart.svg" width="20" height="20" alt="Cart" />
 
-            <span>1205 руб.</span>
+            <span>{cartResultPrice.toLocaleString()} руб.</span>
           </li>
           <li>
             <Link to="/favorites">

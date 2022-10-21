@@ -17,7 +17,7 @@ export default function Favorites({ items, onAddToCart, onAddFavorite, cartProdu
               price={favorite.price}
               image={favorite.image}
               onFavorie={() => onAddFavorite(favorite, favorite.product_id)}
-              onAdd={() => onAddToCart(favorite)}
+              onAdd={() => onAddToCart(favorite, favorite.product_id)}
               isFavorite={true}
               isAdded={cartProducts.some(cartProduct => +cartProduct.product_id === +favorite.product_id)}
             />
