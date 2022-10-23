@@ -1,21 +1,11 @@
-import { useState, useEffect } from "react";
 import TheCartEmpty from "./TheCartEmpty";
 
-export default function TheCart({ onClose, products = [], onRemove }) {
-  console.log(products);
-  const [bill, setBill] = useState(0);
-  const [tax, setTax] = useState(0);
-
-  useEffect(() => {
-    const getBill = () => {
-      let result = 110;
-      products.forEach((p) => {
-        result += p.price;
-      });
-      setBill(result);
-    };
-  }, []);
-
+export default function TheCart({
+  onClose,
+  products = [],
+  onRemove,
+  cartResultPrice,
+}) {
   return (
     <div>
       <div
@@ -77,14 +67,14 @@ export default function TheCart({ onClose, products = [], onRemove }) {
                 <span className="shrink-0">Итого:</span>
                 <span className="border-b border-gray-200 border-dashed w-full"></span>
                 <span className="font-semibold shrink-0">
-                  {bill.toLocaleString()} руб.
+                  {cartResultPrice.toLocaleString()} руб.
                 </span>
               </div>
               <div className="flex justify-between gap-2">
                 <span className="shrink-0">Налог 5%:</span>
                 <span className="border-b border-gray-200 border-dashed w-full"></span>
                 <span className="font-semibold shrink-0">
-                  {tax.toLocaleString()} руб.
+                  {(cartResultPrice * 0.05).toLocaleString()} руб.
                 </span>
               </div>
 

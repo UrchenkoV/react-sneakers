@@ -9,7 +9,29 @@ export default function Home({
   setSearchInput,
   onAddToCart,
   onAddFavorite,
+  isLoading,
 }) {
+  const renderProducts = () => {
+    const filteredProducts = products.filter((item) =>
+      item.title.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    return (isLoading ? [...Array(12)] : filteredProducts).map((p, index) => (
+      <ProductCard
+        key={p?.id || index}
+        title={p?.title}
+        price={p?.price}
+        image={p?.image}
+        onFavorie={() => onAddFavorite(p, p.id)}
+        onAdd={() => onAddToCart(p, p.id)}
+        isAdded={cartProducts.some(
+          (cartProduct) => +cartProduct.product_id === +p.id
+        )}
+        isFavorite={favorites.some((f) => +f.product_id === +p.id)}
+        isLoading={isLoading}
+      />
+    ));
+  };
   return (
     <div className="px-11 py-10">
       <div className="mb-10 flex justify-between items-center">
@@ -39,25 +61,8 @@ export default function Home({
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-10">
-        {products
-          .filter((item) =>
-            item.title.toLowerCase().includes(searchInput.toLowerCase())
-          )
-          .map((p) => (
-            <ProductCard
-              key={p.id}
-              title={p.title}
-              price={p.price}
-              image={p.image}
-              onFavorie={() => onAddFavorite(p, p.id)}
-              onAdd={() => onAddToCart(p, p.id)}
-              isAdded={cartProducts.some(
-                (cartProduct) => +cartProduct.product_id === +p.id
-              )}
-              isFavorite={favorites.some((f) => +f.product_id === +p.id)}
-            />
-          ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        {renderProducts()}
       </div>
     </div>
   );

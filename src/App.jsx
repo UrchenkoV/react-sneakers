@@ -17,6 +17,7 @@ function App() {
   const [isAdded, setIsAdded] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
   const [cartResultPrice, setCartResultPrice] = useState(0);
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function fetchData() {
@@ -33,6 +34,7 @@ function App() {
       setProducts(dataProducts.data);
       setCartProducts(dataCartProducts.data);
       setFavorites(dataFavorites.data);
+      setIsLoading(false)
     }
     fetchData();
   }, []);
@@ -128,6 +130,7 @@ function App() {
           products={cartProducts}
           onClose={() => setIsCartOpen(false)}
           onRemove={onRemoveProduct}
+          cartResultPrice={cartResultPrice}
         />
       )}
 
@@ -151,6 +154,7 @@ function App() {
               cartProducts={cartProducts}
               isAdded={isAdded}
               isFavorite={isFavorite}
+              isLoading={isLoading}
             />
           }
         />
@@ -165,6 +169,7 @@ function App() {
               onAddToCart={onAddToCart}
               isFavorite={isFavorite}
               isAdded={isAdded}
+              isLoading={isLoading}
             />
           }
         />
