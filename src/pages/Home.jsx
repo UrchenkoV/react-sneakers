@@ -1,16 +1,16 @@
 import ProductCard from "../components/ProductCard";
+import AppContext from '../context'
+import {useContext} from 'react'
 
 export default function Home({
   searchInput,
-  products = [],
-  cartProducts = [],
-  favorites = [],
   onSearchInput,
   setSearchInput,
   onAddToCart,
   onAddFavorite,
-  isLoading,
 }) {
+  const {products, favorites, isLoading} = useContext(AppContext)
+  console.log(useContext(AppContext));
   const renderProducts = () => {
     const filteredProducts = products.filter((item) =>
       item.title.toLowerCase().includes(searchInput.toLowerCase())
@@ -19,16 +19,13 @@ export default function Home({
     return (isLoading ? [...Array(12)] : filteredProducts).map((p, index) => (
       <ProductCard
         key={p?.id || index}
+        id={p?.id}
         title={p?.title}
         price={p?.price}
         image={p?.image}
         onFavorie={() => onAddFavorite(p, p.id)}
         onAdd={() => onAddToCart(p, p.id)}
-        isAdded={cartProducts.some(
-          (cartProduct) => +cartProduct.product_id === +p.id
-        )}
         isFavorite={favorites.some((f) => +f.product_id === +p.id)}
-        isLoading={isLoading}
       />
     ));
   };

@@ -1,15 +1,18 @@
 import ContentLoader from "react-content-loader";
+import {useContext} from 'react'
+import AppContext from "../context"
 
 export default function ProductCard({
+  id,
   title,
   image,
   price,
   onFavorie,
   onAdd,
   isFavorite = false,
-  isAdded = false,
-  isLoading = true,
 }) {
+  const {isProductAdded, isLoading} = useContext(AppContext)
+
   return (
     <div className="border border-gray-100 rounded-[40px] p-8 hover:shadow-lg duration-300 hover:-translate-y-1">
       {isLoading ? (
@@ -55,7 +58,7 @@ export default function ProductCard({
               <button onClick={onAdd}>
                 <img
                   src={
-                    isAdded ? "/svg/cart-plus-active.svg" : "/svg/cart-plus.svg"
+                    isProductAdded(id) ? "/svg/cart-plus-active.svg" : "/svg/cart-plus.svg"
                   }
                   alt=""
                 />

@@ -1,11 +1,46 @@
-import TheCartEmpty from "./TheCartEmpty";
+import { useContext, useState } from "react";
+import AppContext from "../context";
+import axios from "axios";
+
+import BaseInfo from "./BaseInfo";
 
 export default function TheCart({
   onClose,
-  products = [],
   onRemove,
   cartResultPrice,
+  setCartProducts,
 }) {
+  const { cartProducts } = useContext(AppContext);
+
+  const [isOrdered, setIsOrdered] = useState(false);
+  const [isOrderLoading, setIsOrderLoading] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const createOrder = async () => {
+    try {
+      setIsOrderLoading(true);
+      const { data } = await axios.post(
+        "https://6347f6c30484786c6e8e09ee.mockapi.io/orders",
+        { items: cartProducts }
+      );
+
+      setIsOrdered(true);
+      setOrderId(data.id);
+      setCartProducts([]);
+
+      for (const item of cartProducts) {
+        await onRemove(item.id)
+        await delay(1000);
+      }
+    } catch (error) {
+      alert("Произошка ошибка при оформлении заказа.");
+      console.error(error);
+    }
+    setIsOrderLoading(false);
+  };
+
   return (
     <div>
       <div
@@ -30,10 +65,10 @@ export default function TheCart({
           </button>
         </div>
 
-        {products.length > 0 ? (
+        {cartProducts.length > 0 ? (
           <div className="flex flex-col flex-1 gap-8 overflow-y-auto">
             <div className="flex flex-col gap-5 grow overflow-y-auto">
-              {products.map((p) => (
+              {cartProducts.map((p) => (
                 <div
                   key={p.id}
                   className="border border-gray-100 rounded-[20px] p-5 flex gap-4 mr-2"
@@ -78,7 +113,16 @@ export default function TheCart({
                 </span>
               </div>
 
-              <button className="group mt-6 font-semibold bg-green-400 hover:bg-green-500 duration-300 text-white py-4 px-7 w-full rounded-[18px] relative flex items-center">
+              <button
+                onClick={createOrder}
+                className={[
+                  "mt-6 font-semibold duration-300 text-white py-4 px-7 w-full rounded-[18px] relative flex items-center",
+                  isOrderLoading
+                    ? "bg-gray-600"
+                    : "group bg-green-400 hover:bg-green-500",
+                ].join(" ")}
+                disabled={isOrderLoading}
+              >
                 <span className="grow">Оформить заказ</span>
                 <img
                   src="/svg/arrow-right.svg"
@@ -89,7 +133,18 @@ export default function TheCart({
             </div>
           </div>
         ) : (
-          <TheCartEmpty onClose={onClose} />
+          <BaseInfo
+            title={isOrdered ? "Заказ оформлен!" : "Корзина"}
+            image={
+              isOrdered ? "/img/order-completed.png" : "/img/cart-empty.png"
+            }
+            description={
+              isOrdered
+                ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке`
+                : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+            }
+            onClose={onClose}
+          />
         )}
       </div>
     </div>
