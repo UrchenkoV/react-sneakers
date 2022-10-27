@@ -8,6 +8,7 @@ import TheCart from "./components/TheCart";
 
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
+import Orders from "./pages/Orders";
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -16,32 +17,32 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [favorites, setFavorites] = useState([]);
   const [isFavorite, setFavorite] = useState(false);
-  const [cartResultPrice, setCartResultPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
-      const dataProducts = await axios.get(
-        "https://6347f6c30484786c6e8e09ee.mockapi.io/products"
-      );
-      const dataCartProducts = await axios.get(
-        "https://6347f6c30484786c6e8e09ee.mockapi.io/cart"
-      );
-      const dataFavorites = await axios.get(
-        "https://6347f6c30484786c6e8e09ee.mockapi.io/favorites"
-      );
+      try {
+        const dataProducts = await axios.get(
+          "https://6347f6c30484786c6e8e09ee.mockapi.io/products"
+        );
+        const dataCartProducts = await axios.get(
+          "https://6347f6c30484786c6e8e09ee.mockapi.io/cart"
+        );
+        const dataFavorites = await axios.get(
+          "https://6347f6c30484786c6e8e09ee.mockapi.io/favorites"
+        );
 
-      setProducts(dataProducts.data);
-      setCartProducts(dataCartProducts.data);
-      setFavorites(dataFavorites.data);
-      setIsLoading(false);
+        setProducts(dataProducts.data);
+        setCartProducts(dataCartProducts.data);
+        setFavorites(dataFavorites.data);
+        setIsLoading(false);
+      } catch (error) {
+        alert("Ошибка при запросе заказов.");
+        console.error(error);
+      }
     }
     fetchData();
   }, []);
-
-  useEffect(() => {
-    setCartResultPrice(getResultPrice());
-  }, [cartProducts]);
 
   const onAddToCart = async (product, productId) => {
     try {
@@ -117,10 +118,6 @@ function App() {
     }
   };
 
-  const getResultPrice = () => {
-    return cartProducts.reduce((accum, current) => accum + current.price, 0);
-  };
-
   const isProductAdded = (productId) => {
     return cartProducts.some(
       (obj) => Number(obj.product_id) === Number(productId)
@@ -129,22 +126,25 @@ function App() {
 
   return (
     <AppContext.Provider
-      value={{ products, favorites, cartProducts, isProductAdded, isLoading }}
+      value={{
+        products,
+        favorites,
+        cartProducts,
+        setCartProducts,
+        isProductAdded,
+        isLoading,
+        setIsLoading,
+      }}
     >
       <div className="wrapper">
         {isCartOpen && (
           <TheCart
             onClose={() => setIsCartOpen(false)}
             onRemove={onRemoveProduct}
-            cartResultPrice={cartResultPrice}
-            setCartProducts={setCartProducts}
           />
         )}
 
-        <TheHeader
-          onOpenCart={() => setIsCartOpen(true)}
-          cartResultPrice={cartResultPrice}
-        />
+        <TheHeader onOpenCart={() => setIsCartOpen(true)} />
 
         <Routes>
           <Route
@@ -171,6 +171,7 @@ function App() {
               />
             }
           />
+          <Route path="/orders" element={<Orders />} />
         </Routes>
       </div>
     </AppContext.Provider>

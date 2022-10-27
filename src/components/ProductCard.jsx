@@ -1,6 +1,6 @@
 import ContentLoader from "react-content-loader";
-import {useContext} from 'react'
-import AppContext from "../context"
+import { useContext } from "react";
+import AppContext from "../context";
 
 export default function ProductCard({
   id,
@@ -11,7 +11,7 @@ export default function ProductCard({
   onAdd,
   isFavorite = false,
 }) {
-  const {isProductAdded, isLoading} = useContext(AppContext)
+  const { isProductAdded, isLoading } = useContext(AppContext);
 
   return (
     <div className="border border-gray-100 rounded-[40px] p-8 hover:shadow-lg duration-300 hover:-translate-y-1">
@@ -32,16 +32,18 @@ export default function ProductCard({
         </ContentLoader>
       ) : (
         <div className="">
-          <button className="absolute" onClick={onFavorie}>
-            <img
-              src={
-                isFavorite
-                  ? "/svg/favorite-active.svg"
-                  : "/svg/favorite-inactive.svg"
-              }
-              alt=""
-            />
-          </button>
+          {onFavorie && (
+            <button className="absolute" onClick={onFavorie}>
+              <img
+                src={
+                  isFavorite
+                    ? "/svg/favorite-active.svg"
+                    : "/svg/favorite-inactive.svg"
+                }
+                alt=""
+              />
+            </button>
+          )}
 
           <div className="flex flex-col gap-4">
             <img src={image} alt={title} />
@@ -52,17 +54,22 @@ export default function ProductCard({
                   Цена:
                 </p>
                 <span className="text-sm font-bold">
-                  {price.toLocaleString()} руб.
+                  {price?.toLocaleString()} руб.
                 </span>
               </div>
-              <button onClick={onAdd}>
-                <img
-                  src={
-                    isProductAdded(id) ? "/svg/cart-plus-active.svg" : "/svg/cart-plus.svg"
-                  }
-                  alt=""
-                />
-              </button>
+
+              {onAdd && (
+                <button onClick={onAdd}>
+                  <img
+                    src={
+                      isProductAdded(id)
+                        ? "/svg/cart-plus-active.svg"
+                        : "/svg/cart-plus.svg"
+                    }
+                    alt=""
+                  />
+                </button>
+              )}
             </div>
           </div>
         </div>

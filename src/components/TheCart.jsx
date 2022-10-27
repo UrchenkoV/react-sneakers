@@ -1,16 +1,13 @@
 import { useContext, useState } from "react";
 import AppContext from "../context";
 import axios from "axios";
+import { useCart } from "../hooks/useCart";
 
 import BaseInfo from "./BaseInfo";
 
-export default function TheCart({
-  onClose,
-  onRemove,
-  cartResultPrice,
-  setCartProducts,
-}) {
+export default function TheCart({ onClose, onRemove }) {
   const { cartProducts } = useContext(AppContext);
+  const { cartResultPrice, setCartProducts } = useCart();
 
   const [isOrdered, setIsOrdered] = useState(false);
   const [isOrderLoading, setIsOrderLoading] = useState(false);
@@ -31,7 +28,7 @@ export default function TheCart({
       setCartProducts([]);
 
       for (const item of cartProducts) {
-        await onRemove(item.id)
+        await onRemove(item.id);
         await delay(1000);
       }
     } catch (error) {
@@ -68,9 +65,9 @@ export default function TheCart({
         {cartProducts.length > 0 ? (
           <div className="flex flex-col flex-1 gap-8 overflow-y-auto">
             <div className="flex flex-col gap-5 grow overflow-y-auto">
-              {cartProducts.map((p) => (
+              {cartProducts.map((p, index) => (
                 <div
-                  key={p.id}
+                  key={index}
                   className="border border-gray-100 rounded-[20px] p-5 flex gap-4 mr-2"
                 >
                   <img src={p.image} width="70" height="70" alt={p.title} />

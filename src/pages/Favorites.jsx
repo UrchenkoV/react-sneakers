@@ -1,14 +1,11 @@
-import {useContext} from 'react'
-import AppContext from '../context'
+import { useContext } from "react";
+import AppContext from "../context";
 
-import FavoriteEmpty from "../components/FavoriteEmpty";
 import ProductCard from "../components/ProductCard";
+import BaseInfo from "../components/BaseInfo";
 
-export default function Favorites({
-  onAddToCart,
-  onAddFavorite,
-}) {
-  const {favorites, isLoading} = useContext(AppContext)
+export default function Favorites({ onAddToCart, onAddFavorite }) {
+  const { favorites, isLoading } = useContext(AppContext);
 
   const renderItems = () => {
     return (isLoading ? [...Array(8)] : favorites).map((favorite, index) => (
@@ -34,7 +31,13 @@ export default function Favorites({
       {favorites.length > 0 || isLoading ? (
         <div className="grid grid-cols-4 gap-10">{renderItems()}</div>
       ) : (
-        <FavoriteEmpty />
+        <div className='mb-20'>
+          <BaseInfo
+            image="/img/smile-sad.png"
+            title="Закладок нет :("
+            description="Вы ничего не добавляли в закладки"
+          />
+        </div>
       )}
     </div>
   );

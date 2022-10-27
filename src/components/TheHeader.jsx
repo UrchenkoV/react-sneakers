@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../hooks/useCart";
 
-export default function TheHeader({onOpenCart, cartResultPrice}) {
+export default function TheHeader({ onOpenCart }) {
+  const { cartResultPrice } = useCart();
+
   return (
     <header className="border-gray-100 border-b">
       <div className="py-11 px-11 flex justify-between items-center">
@@ -34,7 +37,9 @@ export default function TheHeader({onOpenCart, cartResultPrice}) {
             </Link>
           </li>
           <li className="cursor-pointer">
-            <img src="/svg/user.svg" width="20" height="20" alt="User" />
+            <Link to="/orders">
+              <img src="/svg/user.svg" width="20" height="20" alt="User" />
+            </Link>
           </li>
         </ul>
       </div>
