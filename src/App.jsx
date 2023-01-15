@@ -10,6 +10,8 @@ import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Orders from "./pages/Orders";
 
+import data from "./data.json";
+
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [products, setProducts] = useState([]);
@@ -22,19 +24,13 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const dataProducts = await axios.get(
-          "https://6347f6c30484786c6e8e09ee.mockapi.io/products"
-        );
-        const dataCartProducts = await axios.get(
-          "https://6347f6c30484786c6e8e09ee.mockapi.io/cart"
-        );
-        const dataFavorites = await axios.get(
-          "https://6347f6c30484786c6e8e09ee.mockapi.io/favorites"
-        );
+        const dataProducts = await data.products;
+        const dataCartProducts = await data.cartProducts;
+        const dataFavorites = await data.favorites;
 
-        setProducts(dataProducts.data);
-        setCartProducts(dataCartProducts.data);
-        setFavorites(dataFavorites.data);
+        setProducts(dataProducts);
+        setCartProducts(dataCartProducts);
+        setFavorites(dataFavorites);
         setIsLoading(false);
       } catch (error) {
         alert("Ошибка при запросе заказов.");
